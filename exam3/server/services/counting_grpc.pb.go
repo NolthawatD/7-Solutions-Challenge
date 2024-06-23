@@ -19,7 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion8
 
 const (
-	Counting_Hello_FullMethodName = "/services.Counting/Hello"
+	Counting_Hello_FullMethodName     = "/services.Counting/Hello"
+	Counting_CountBeef_FullMethodName = "/services.Counting/CountBeef"
 )
 
 // CountingClient is the client API for Counting service.
@@ -27,6 +28,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CountingClient interface {
 	Hello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloResponse, error)
+	CountBeef(ctx context.Context, in *CountBeefRequest, opts ...grpc.CallOption) (*CountBeefResponse, error)
 }
 
 type countingClient struct {
@@ -47,11 +49,22 @@ func (c *countingClient) Hello(ctx context.Context, in *HelloRequest, opts ...gr
 	return out, nil
 }
 
+func (c *countingClient) CountBeef(ctx context.Context, in *CountBeefRequest, opts ...grpc.CallOption) (*CountBeefResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CountBeefResponse)
+	err := c.cc.Invoke(ctx, Counting_CountBeef_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CountingServer is the server API for Counting service.
 // All implementations must embed UnimplementedCountingServer
 // for forward compatibility
 type CountingServer interface {
 	Hello(context.Context, *HelloRequest) (*HelloResponse, error)
+	CountBeef(context.Context, *CountBeefRequest) (*CountBeefResponse, error)
 	mustEmbedUnimplementedCountingServer()
 }
 
@@ -61,6 +74,9 @@ type UnimplementedCountingServer struct {
 
 func (UnimplementedCountingServer) Hello(context.Context, *HelloRequest) (*HelloResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Hello not implemented")
+}
+func (UnimplementedCountingServer) CountBeef(context.Context, *CountBeefRequest) (*CountBeefResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CountBeef not implemented")
 }
 func (UnimplementedCountingServer) mustEmbedUnimplementedCountingServer() {}
 
@@ -93,6 +109,24 @@ func _Counting_Hello_Handler(srv interface{}, ctx context.Context, dec func(inte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Counting_CountBeef_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CountBeefRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CountingServer).CountBeef(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Counting_CountBeef_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CountingServer).CountBeef(ctx, req.(*CountBeefRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Counting_ServiceDesc is the grpc.ServiceDesc for Counting service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -103,6 +137,10 @@ var Counting_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Hello",
 			Handler:    _Counting_Hello_Handler,
+		},
+		{
+			MethodName: "CountBeef",
+			Handler:    _Counting_CountBeef_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

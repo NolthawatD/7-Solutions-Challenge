@@ -6,6 +6,7 @@ option go_package="./services";
 
 service Counting {
 	rpc Hello(HelloRequest) returns(HelloResponse);
+	rpc CountBeef(CountBeefRequest) returns (CountBeefResponse);
 }
 
 message HelloRequest {
@@ -14,4 +15,12 @@ message HelloRequest {
 
 message HelloResponse {
 	string result = 1;
+}
+
+message CountBeefRequest {
+	string text = 1;
+}
+
+message CountBeefResponse {
+	map<string, int32> beef = 1;
 }

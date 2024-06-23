@@ -20,7 +20,8 @@ func main() {
 	countingClient := services.NewCountingClient(cc)
 	countingServices := services.NewCountingService(countingClient)
 
-	err = countingServices.Hello("Nolthawat")
+	// err = countingServices.Hello("Nolthawat")
+	err = countingServices.CountBeef("Fatback t-bone t-bone, pastrami .. t-bone. pork, meatloaf jowl enim. Bresaola t-bone.")
 	if err != nil {
 		if grpcErr, ok := status.FromError(err); ok {
 			log.Printf("[%v] %v", grpcErr.Code(), grpcErr.Message())
