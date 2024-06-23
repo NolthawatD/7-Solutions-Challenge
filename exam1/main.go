@@ -1,20 +1,15 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func main() {
+	result1 := sumHirarchyMaxValuePath(hirarchy1)
+	fmt.Printf("result: %v", result1)
 
-	//[[59], [73, 41], [52, 40, 53], [26, 53, 6, 34]]
-
-	hirarchy1 := [][]int{
-		{59},
-		{73, 41},
-		{52, 40, 53},
-		{26, 53, 6, 34},
-	}
-
-	sumHirarchyMaxValuePath(hirarchy1)
-
+	result2 := sumHirarchyMaxValuePath(hirarchy2)
+	fmt.Printf("result: %v", result2)
 }
 
 func sumHirarchyMaxValuePath(hierarchy [][]int) int {
@@ -29,6 +24,9 @@ func sumHirarchyMaxValuePath(hierarchy [][]int) int {
 
 		left := hierarchy[i][index]
 		right := 0
+		if index+1 < len(hierarchy[i]) {
+			right = hierarchy[i][index+1]
+		}
 
 		// sum max value left or right
 		if left > right {
