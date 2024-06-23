@@ -27,7 +27,7 @@ func sumHirarchyMaxValuePath(hierarchy [][]int) int {
 			totalSum += right
 			index++
 		}
-		fmt.Printf("len(%d) |  left = %d, right = %d ==> totalSumb = %d\n", len(hierarchy[i]), left, right, totalSum)
+		// fmt.Printf("len(%d) |  left = %d, right = %d ==> totalSumb = %d\n", len(hierarchy[i]), left, right, totalSum)
 	}
 	return totalSum
 }
