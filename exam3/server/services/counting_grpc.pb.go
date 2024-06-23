@@ -19,90 +19,90 @@ import (
 const _ = grpc.SupportPackageIsVersion8
 
 const (
-	Calculator_Hello_FullMethodName = "/services.Calculator/Hello"
+	Counting_Hello_FullMethodName = "/services.Counting/Hello"
 )
 
-// CalculatorClient is the client API for Calculator service.
+// CountingClient is the client API for Counting service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type CalculatorClient interface {
+type CountingClient interface {
 	Hello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloResponse, error)
 }
 
-type calculatorClient struct {
+type countingClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewCalculatorClient(cc grpc.ClientConnInterface) CalculatorClient {
-	return &calculatorClient{cc}
+func NewCountingClient(cc grpc.ClientConnInterface) CountingClient {
+	return &countingClient{cc}
 }
 
-func (c *calculatorClient) Hello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloResponse, error) {
+func (c *countingClient) Hello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(HelloResponse)
-	err := c.cc.Invoke(ctx, Calculator_Hello_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, Counting_Hello_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// CalculatorServer is the server API for Calculator service.
-// All implementations must embed UnimplementedCalculatorServer
+// CountingServer is the server API for Counting service.
+// All implementations must embed UnimplementedCountingServer
 // for forward compatibility
-type CalculatorServer interface {
+type CountingServer interface {
 	Hello(context.Context, *HelloRequest) (*HelloResponse, error)
-	mustEmbedUnimplementedCalculatorServer()
+	mustEmbedUnimplementedCountingServer()
 }
 
-// UnimplementedCalculatorServer must be embedded to have forward compatible implementations.
-type UnimplementedCalculatorServer struct {
+// UnimplementedCountingServer must be embedded to have forward compatible implementations.
+type UnimplementedCountingServer struct {
 }
 
-func (UnimplementedCalculatorServer) Hello(context.Context, *HelloRequest) (*HelloResponse, error) {
+func (UnimplementedCountingServer) Hello(context.Context, *HelloRequest) (*HelloResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Hello not implemented")
 }
-func (UnimplementedCalculatorServer) mustEmbedUnimplementedCalculatorServer() {}
+func (UnimplementedCountingServer) mustEmbedUnimplementedCountingServer() {}
 
-// UnsafeCalculatorServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to CalculatorServer will
+// UnsafeCountingServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to CountingServer will
 // result in compilation errors.
-type UnsafeCalculatorServer interface {
-	mustEmbedUnimplementedCalculatorServer()
+type UnsafeCountingServer interface {
+	mustEmbedUnimplementedCountingServer()
 }
 
-func RegisterCalculatorServer(s grpc.ServiceRegistrar, srv CalculatorServer) {
-	s.RegisterService(&Calculator_ServiceDesc, srv)
+func RegisterCountingServer(s grpc.ServiceRegistrar, srv CountingServer) {
+	s.RegisterService(&Counting_ServiceDesc, srv)
 }
 
-func _Calculator_Hello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Counting_Hello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(HelloRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CalculatorServer).Hello(ctx, in)
+		return srv.(CountingServer).Hello(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Calculator_Hello_FullMethodName,
+		FullMethod: Counting_Hello_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CalculatorServer).Hello(ctx, req.(*HelloRequest))
+		return srv.(CountingServer).Hello(ctx, req.(*HelloRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// Calculator_ServiceDesc is the grpc.ServiceDesc for Calculator service.
+// Counting_ServiceDesc is the grpc.ServiceDesc for Counting service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var Calculator_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "services.Calculator",
-	HandlerType: (*CalculatorServer)(nil),
+var Counting_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "services.Counting",
+	HandlerType: (*CountingServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "Hello",
-			Handler:    _Calculator_Hello_Handler,
+			Handler:    _Counting_Hello_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
