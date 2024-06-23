@@ -4,14 +4,6 @@ import (
 	"fmt"
 )
 
-func main() {
-	result1 := sumHirarchyMaxValuePath(hirarchy1)
-	fmt.Printf("result: %v", result1)
-
-	result2 := sumHirarchyMaxValuePath(hirarchy2)
-	fmt.Printf("result: %v", result2)
-}
-
 func sumHirarchyMaxValuePath(hierarchy [][]int) int {
 	if len(hierarchy) == 0 {
 		return 0
@@ -37,6 +29,10 @@ func sumHirarchyMaxValuePath(hierarchy [][]int) int {
 		}
 		fmt.Printf("len(%d) |  left = %d, right = %d ==> totalSumb = %d\n", len(hierarchy[i]), left, right, totalSum)
 	}
-
 	return totalSum
+}
+
+func main() {
+	result := sumHirarchyMaxValuePath(hirarchy2)
+	fmt.Printf("input = %v result = %d\n", hirarchy2, result)
 }
