@@ -32,7 +32,6 @@ func decodeString(encoded string) (string, int) {
 			continue
 		}
 	}
-	// fmt.Println("result 1: ", result)
 	// fmt.Println("*** reverse check ***")
 
 	for i := length - 1; i >= 0; i-- {
@@ -66,7 +65,6 @@ func decodeString(encoded string) (string, int) {
 
 		}
 	}
-	// fmt.Println("result 2: ", result)
 
 	var numberSetBuild strings.Builder
 	for _, num := range result {
@@ -82,23 +80,34 @@ func decodeString(encoded string) (string, int) {
 	return resultString, resultSum
 }
 
-func main() {
-	// input = LLRR= output = 210122
-	// input = ==RLL output = 000210
-	// input = =LLRR output = 221012
-	// input = RRL=R output = 012001
-	// decodeString("LLRR=")
-	// decodeString("==RLL")
-	// decodeString("=LLRR")
-	// decodeString("RRL=R")
-	// decodeString("LLL=R")
-	// decodeString("LLLLL")
-	// decodeString("RRRRR")
-	// decodeString("=====")
-	// decodeString("L====")
-	// decodeString("R====")
-	input := "LLRR="
-	resultString, _ := decodeString(input)
-	fmt.Printf("input = %s output = %s ", input, resultString)
+func isValidEncodedString(s string) bool {
+	validChars := "=LR"
+	for _, char := range s {
+		if !strings.ContainsRune(validChars, char) {
+			return false
+		}
+	}
+	return true
+}
 
+func inputEncodeString() {
+	var encoded string
+	for {
+		fmt.Print("Enter the encoded [ must be  L, R, = ] :  ")
+		fmt.Scanln(&encoded)
+
+		if isValidEncodedString(encoded) {
+			resultString, _ := decodeString(encoded)
+			fmt.Printf("input = %s, output = %s \n", encoded, resultString)
+			inputEncodeString()
+			// break
+		} else {
+			fmt.Println("Invalid encoded string. It should only contain '=', 'L', or 'R'. Please try again.")
+		}
+	}
+
+}
+
+func main() {
+	inputEncodeString()
 }
