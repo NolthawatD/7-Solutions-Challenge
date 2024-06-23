@@ -17,9 +17,7 @@ message HelloResponse {
 	string result = 1;
 }
 
-message CountBeefRequest {
-	string text = 1;
-}
+message CountBeefRequest {}
 
 message CountBeefResponse {
 	map<string, int32> beef = 1;

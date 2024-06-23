@@ -3,6 +3,8 @@ package services
 import (
 	context "context"
 	"fmt"
+	"io/ioutil"
+	"net/http"
 	"regexp"
 	"strings"
 
@@ -35,16 +37,14 @@ func (countingServer) Hello(ctx context.Context, req *HelloRequest) (*HelloRespo
 }
 
 func (countingServer) CountBeef(ctx context.Context, req *CountBeefRequest) (*CountBeefResponse, error) {
-
-	if req.Text == "" {
-		return nil, status.Errorf(
-			codes.InvalidArgument,
-			"Texy is required",
-		)
+	url := "https://baconipsum.com/api/?type=meat-and-filler&paras=99&format=text"
+	data, err := fetchData(url)
+	if err != nil {
+		return nil, err
 	}
 
 	wordsToCount := []string{"t-bone", "fatback", "pastrami", "pork", "meatloaf", "jowl", "enim", "bresaola"}
-	wordCounts := countWords(req.Text, wordsToCount)
+	wordCounts := countWords(data, wordsToCount)
 	fmt.Printf("beef: %v\n", wordCounts)
 
 	res := CountBeefResponse{
@@ -52,6 +52,21 @@ func (countingServer) CountBeef(ctx context.Context, req *CountBeefRequest) (*Co
 	}
 
 	return &res, nil
+}
+
+func fetchData(url string) (string, error) {
+	resp, err := http.Get(url)
+	if err != nil {
+		return "", fmt.Errorf("failed to make request: %v", err)
+	}
+	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return "", fmt.Errorf("failed to read response body: %v", err)
+	}
+
+	return string(body), nil
 }
 
 func countWords(text string, wordsToCount []string) map[string]int32 {
