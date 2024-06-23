@@ -49,6 +49,8 @@ func (countingServer) CountBeef(ctx context.Context, req *CountBeefRequest) (*Co
 		text = data
 	}
 
+	// fmt.Println("text == ", text)
+
 	wordsToCount := []string{"t-bone", "fatback", "pastrami", "pork", "meatloaf", "jowl", "enim", "bresaola"}
 	wordCounts := countWords(text, wordsToCount)
 	fmt.Printf("beef: %v\n", wordCounts)
