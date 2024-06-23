@@ -23,7 +23,7 @@ func main() {
 	services.RegisterCountingServer(s, services.NewCountingServer())
 	reflection.Register(s)
 
-	fmt.Printf("gRPC server listening on port %s", port)
+	fmt.Printf("gRPC server listening on port %s\n", port)
 	err = s.Serve(listener)
 	if err != nil {
 		log.Fatal(err)
