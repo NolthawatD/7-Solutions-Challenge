@@ -5,20 +5,6 @@ import (
 	"strings"
 )
 
-/*
-
-	สัญลักษณ์ “L” หมายความว่า ตัวเลขด้านซ้าย มีค่ามากกว่า ตัวเลขด้านขวา
-	สัญลักษณ์ “R” หมายความว่า ตัวเลขด้านขวา มีค่ามากกว่า ตัวเลขด้านซ้าย
-	สัญลักษณ์ “=“ หมายความว่า ตัวเลขด้านซ้าย มีค่าเท่ากับ ตัวเลขด้านขวา
-
-
-	input = LLRR= output = 210122
-	input = ==RLL output = 000210
-	input = =LLRR output = 221012
-	input = RRL=R output = 012001
-
-*/
-
 func decodeString(encoded string) (string, int) {
 	length := len(encoded)
 	result := make([]int, length+1)
