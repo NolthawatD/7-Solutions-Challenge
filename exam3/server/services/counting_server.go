@@ -37,14 +37,20 @@ func (countingServer) Hello(ctx context.Context, req *HelloRequest) (*HelloRespo
 }
 
 func (countingServer) CountBeef(ctx context.Context, req *CountBeefRequest) (*CountBeefResponse, error) {
-	url := "https://baconipsum.com/api/?type=meat-and-filler&paras=99&format=text"
-	data, err := fetchData(url)
-	if err != nil {
-		return nil, err
+	var text string
+	if req.Text != "" {
+		text = req.Text
+	} else {
+		url := "https://baconipsum.com/api/?type=meat-and-filler&paras=99&format=text"
+		data, err := fetchData(url)
+		if err != nil {
+			return nil, err
+		}
+		text = data
 	}
 
 	wordsToCount := []string{"t-bone", "fatback", "pastrami", "pork", "meatloaf", "jowl", "enim", "bresaola"}
-	wordCounts := countWords(data, wordsToCount)
+	wordCounts := countWords(text, wordsToCount)
 	fmt.Printf("beef: %v\n", wordCounts)
 
 	res := CountBeefResponse{

@@ -7,7 +7,7 @@ import (
 
 type CountingService interface {
 	Hello(name string) error
-	CountBeef() error
+	CountBeef(text string) error
 }
 
 type countingService struct {
@@ -35,8 +35,10 @@ func (base countingService) Hello(name string) error {
 	return nil
 }
 
-func (base countingService) CountBeef() error {
-	req := CountBeefRequest{}
+func (base countingService) CountBeef(text string) error {
+	req := CountBeefRequest{
+		Text: text,
+	}
 
 	res, err := base.countingClient.CountBeef(context.Background(), &req)
 	if err != nil {
